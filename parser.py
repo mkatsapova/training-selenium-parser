@@ -20,11 +20,12 @@ class ProgHubParser(object):
         btn_cookie = self.driver.find_element_by_css_selector('div.cookie__notification_btn a')
         btn_cookie.click()
 
+        self.driver.refresh()
+
         test_card_elems = self.driver.find_elements_by_tag_name('div.testCard>a')
 
         for elem in test_card_elems:
             lang_link = elem.get_attribute('href')
-
 
             # if first part of link at this page is different than initial link
             if self.lang in lang_link:
@@ -46,6 +47,7 @@ class ProgHubParser(object):
         print(question)
 
     def fill_question_text(self, question):
+        self.driver.refresh()
         try:
             question_text_elm = self.driver.find_element_by_css_selector('h1.title>span')
             question.text = question_text_elm.text
@@ -62,6 +64,7 @@ class ProgHubParser(object):
             pass
 
     def fill_question_answer(self, question):
+        self.driver.refresh()
         try:
             btn_answer = self.driver.find_element_by_css_selector('div.answer')
             btn_answer.click()
