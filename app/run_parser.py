@@ -3,9 +3,8 @@ import time
 # "chromedriver_binary" for import path of chromedriver.
 # noinspection PyUnresolvedReferences
 import chromedriver_binary
-from selenium import webdriver
-
 from app.parser import ProgHubParser
+from selenium import webdriver
 
 
 def run_parser() -> None:
