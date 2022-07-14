@@ -1,14 +1,18 @@
+import datetime
 import json
 import time
+from typing import TYPE_CHECKING
 
-from model import Question
-from selenium import webdriver
+from app.models import Question
+from app.settings import RESULTS_FOLDER_PATH
 from selenium.common.exceptions import NoSuchElementException
 
-all_questions_list = []
+if TYPE_CHECKING:
+    from selenium.webdriver.chrome.webdriver import WebDriver
+
 
 class ProgHubParser(object):
-    def __init__(self, driver, lang):
+    def __init__(self, driver: 'WebDriver', lang: str):
         self.driver = driver
         self.lang = lang
 
@@ -93,32 +97,9 @@ class ProgHubParser(object):
         except NoSuchElementException:
             print('Something went wrong! Refresh the page or return to the main page')
 
-    def save_to_json(self, question):
+    # noinspection PyMethodMayBeStatic
+    def save_to_json(self, question: Question):
+        path = RESULTS_FOLDER_PATH.joinpath(f'{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json')
 
-        all_questions_list.append(
-            {
-                'text_question': question.text,
-                'code_question': question.code,
-                'answers_to_the_question': question.answers
-            }
-        )
-
-        with open('result.json', 'a+', encoding='utf-8') as write_file:
-            json.dump(all_questions_list, write_file, indent=4, ensure_ascii=False)
-
-
-def main():
-    try:
-        driver = webdriver.Chrome()
-        parser = ProgHubParser(driver, 'python-3-basic')
-        parser.parse()
-    finally:
-        time.sleep(3)
-        driver.quit()
-
-
-
-
-
-if __name__ == '__main__':
-    main()
+        with open(path, mode='w', encoding='utf-8') as write_file:
+            json.dump(question.simplify(), write_file, indent=4, ensure_ascii=False)

@@ -1,0 +1,14 @@
+{
+    "text_question": "Корректно ли следующее объявление класса:",
+    "code_question": "class myClass: \n    pass ",
+    "answers_to_the_question": [
+        [
+            "Да",
+            true
+        ],
+        [
+            "Нет",
+            false
+        ]
+    ]
+}
